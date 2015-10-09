@@ -1,0 +1,102 @@
+@import url(https://fonts.googleapis.com/css?family=Lobster|Open+Sans:600,800)
+
+
+// Variables
+
+$red: #FF5F5F
+
+
+// Mixins
+
+=header($font-size, $font-color, $background-color)
+  background-color: $background-color
+  color: $font-color
+  padding: 10px
+  margin: 0
+  text-transform: uppercase
+  text-align: center
+  font:
+    family: 'Lobster', cursive
+    size: $font-size
+
+// Styles
+
+body
+  overflow-x: hidden
+  background:
+    image: url('../images/bg.png')
+    repeat: repeat
+
+h1
+  +header(48px, white, $red)
+
+h2
+  +header(24px, $red, white)
+
+h3
+  +header(36px, black, #D8D8D8)
+  text-transform: none
+
+a
+  color: black
+  text-decoration: none
+
+.container
+  margin: 30px auto
+  padding: 0 20px
+  width: 60%
+
+.controls
+  margin-top: 30px
+  padding: 0 10px
+
+  a:first-child
+    float: left
+
+  a:last-child
+    float: right
+
+
+.guesses-left
+  margin: 50px auto 0 auto
+  width: 80%
+
+input
+  text-align: center
+  width: 100%
+  font:
+    family: 'Open Sans', sans-serif
+    size: 48px
+    weight: 800
+
+.submit-guess
+  background-color: #76C295
+  text-transform: uppercase
+  width: 100%
+  font:
+    family: 'Open Sans', sans-serif
+    size: 36px
+    weight: 600
+
+// Responsive styles
+
+@media all and (max-width: 668px)
+  h1
+    font-size: 30px
+
+  h2
+    font-size: 18px
+
+  h3
+    font-size: 24px
+
+  input
+    font-size: 28px
+
+  .submit-guess
+    font-size: 24px
+
+  .container
+    padding: 0
+    margin: 0
+    width: 100%
