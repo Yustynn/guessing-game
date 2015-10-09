@@ -38,17 +38,6 @@
 		"outputPathIsSetByUser": 0,
 		"processed": 0
 		},
-	"\/images\/Rectangle 2 + Rectangle 2 Copy 15.png": {
-		"fileType": 32768,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"initialSize": 94,
-		"inputAbbreviatedPath": "\/images\/Rectangle 2 + Rectangle 2 Copy 15.png",
-		"outputAbbreviatedPath": "\/images\/Rectangle 2 + Rectangle 2 Copy 15.png",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"processed": 0
-		},
 	"\/index.html": {
 		"fileType": 8192,
 		"ignore": 0,
