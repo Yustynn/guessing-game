@@ -94,6 +94,18 @@ $(document).ready(function() {
       return this.lose();
   };
 
+  Game.prototype.cheatCodeChecker = function() {
+    if (this.guess == 'inittowinit') {
+      this.win();
+      return true;
+    }
+    if (this.guess == 'cantwinemall') {
+      this.lose();
+      return true;
+    }
+    return false
+  }
+
   // return boolean for if guess is 1) not a repeat AND 2) a number between 1-100
   Game.prototype.validGuess = function() {
     if (!this.guess) {
@@ -125,7 +137,7 @@ $(document).ready(function() {
       return;
 
     this.retrieveGuess();
-    if (!this.validGuess())
+    if (this.cheatCodeChecker() || !this.validGuess())
       return;
     this.storeGuess();
     this.displayGuess();
