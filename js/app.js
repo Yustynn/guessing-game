@@ -85,6 +85,18 @@ $(document).ready(function() {
 
   // return boolean for if guess is 1) not a repeat AND 2) a number between 1-100
   Game.prototype.validGuess = function() {
+    if (!this.guess) {
+      alert('Fill in a number between 1 and 100!');
+      return false;
+    }
+    if (!Number(this.guess)) {
+      alert('Use your numbers, not your words');
+      return false;
+    }
+    if (this.guess > 100 || this.guess < 1) {
+      alert('Guess within 1 and 100!');
+      return false;
+    }
     // Alert if guessed already
     if (this.guesses.indexOf(this.guess) != -1) {
       alert('You already guessed ' + this.guess + '!');
