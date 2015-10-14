@@ -6,6 +6,7 @@ $(document).ready(function() {
   var guessedElement = $('#guessed');
   var guessElement = $('#guessbox');
   var numGuessesLeftNode = $('#num-guesses');
+  var relativeTempElement = $('#relative-temp');
 
   function Game() {
     // randomly generate answer
@@ -30,26 +31,35 @@ $(document).ready(function() {
   };
 
 
-  // Return true if guess is hot, false if guess is cold
-  Game.prototype.guessIsHot = function() {
+  // Return true if guess is hotter, false if guess is colder
+  Game.prototype.guessIsHotter = function() {
     var prevGuess = this.guesses[this.guesses.length - 2];
-
     return Math.abs(prevGuess - this.answer) >= Math.abs(this.guess - this.answer);
   };
+
+  // Return true if guess is hot (<=20 from answer), false if guess is cold (>20 from answer)
+  Game.prototype.guessIsHot = function() {
+    return Math.abs(this.guess - this.answer) <= 20;
+  }
 
   // Adds guess to HTML
   Game.prototype.displayGuess = function() {
     var guessSpan = $('<span>' + this.guess + '</span>');
-
-    // add class to indicate guess temperature
-    if (this.guesses.length > 1) {
-      if (this.guessIsHot())
-        guessSpan.addClass('hot');
-      else
-        guessSpan.addClass('cold');
-    }
+    if (this.guessIsHot())
+      guessSpan.addClass('hot');
+    else
+      guessSpan.addClass('cold');
 
     guessedElement.append(guessSpan);
+  };
+
+  Game.prototype.displayRelativeTemp = function() {
+    if (this.guesses.length > 1) {
+      if (this.guessIsHotter())
+        relativeTempElement.html('Hotter!');
+      else
+        relativeTempElement.html('Colder!');
+    }
   };
 
   // return boolean for if guess is correct
@@ -90,6 +100,8 @@ $(document).ready(function() {
       return;
     this.storeGuess();
     this.displayGuess();
+    this.displayRelativeTemp();
+
     if (this.correctGuess())
       return this.win();
     else
@@ -135,6 +147,9 @@ $(document).ready(function() {
   // New game on restart button click
   $('#restart').on('click', function(e) {
     e.preventDefault();
+    // Clear previous guesses
+    guessedElement.html('Guessed: ');
+    relativeTempElement.html('');
     game = new Game;
   });
 });

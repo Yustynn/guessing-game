@@ -66,6 +66,10 @@ a {
   #guessed .cold {
     color: blue; }
 
+#relative-temp {
+  font-size: 36px;
+  text-align: center; }
+
 input {
   text-align: center;
   width: 100%;
