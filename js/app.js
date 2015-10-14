@@ -7,6 +7,7 @@ $(document).ready(function() {
   var guessElement = $('#guessbox');
   var numGuessesLeftNode = $('#num-guesses');
   var relativeTempElement = $('#relative-temp');
+  var higherLowerElement = $('#higher-lower');
 
   function Game() {
     // randomly generate answer
@@ -65,6 +66,16 @@ $(document).ready(function() {
     }
   };
 
+  // Prompt user on how to guess next
+  Game.prototype.displayHigherLower = function() {
+    if (this.guess < this.answer)
+      higherLowerElement.html('Guess Higher!');
+    else if (this.guess > this.answer)
+      higherLowerElement.html('Guess Lower!');
+    else
+      higherLowerElement.html('Just right!');
+  }
+
   // return boolean for if guess is correct
   Game.prototype.correctGuess = function() {
     return this.guess == this.answer;
@@ -110,12 +121,16 @@ $(document).ready(function() {
 
   // return win() if correct guess. Return minusGuess() if wrong guess.
   Game.prototype.turn = function() {
+    if (this.gameOver)
+      return;
+
     this.retrieveGuess();
     if (!this.validGuess())
       return;
     this.storeGuess();
     this.displayGuess();
     this.displayRelativeTemp();
+    this.displayHigherLower();
 
     if (this.correctGuess())
       return this.win();
@@ -126,11 +141,13 @@ $(document).ready(function() {
   // tell the player the good news
   Game.prototype.win = function() {
     alert('YOU WIN!');
+    this.gameOver = true;
   };
 
   // tell the player to suck it
   Game.prototype.lose = function() {
     alert('YOU LOSE! The right answer was ' + this.answer);
+    this.gameOver = true;
   };
 
   // tell the player the answer
