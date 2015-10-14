@@ -15,6 +15,9 @@ $(document).ready(function() {
     this.numGuessesLeft = 5;
     this.guesses = [];
 
+    // Clear previous input
+    guessedElement.html('Guessed: ');
+    relativeTempElement.html('');
     // reset displayed guesses left to 5
     this.updateNumGuessesDisplay();
   }
@@ -132,10 +135,12 @@ $(document).ready(function() {
   });
 
   // Initiate turn on enter key guess submission
-  $('#guessbox').on('keyup', function(e) {
-    e.preventDefault(); // Just in case
-    if (e.keyCode == 13)
+  // (assignment requirement didn't specify which element)
+  $(document).on('keydown', function(e) {
+    if (e.keyCode == 13) {
+      e.preventDefault();
       game.turn();
+    }
   });
 
   // Give answer on hint request
@@ -147,9 +152,6 @@ $(document).ready(function() {
   // New game on restart button click
   $('#restart').on('click', function(e) {
     e.preventDefault();
-    // Clear previous guesses
-    guessedElement.html('Guessed: ');
-    relativeTempElement.html('');
     game = new Game;
   });
 });
