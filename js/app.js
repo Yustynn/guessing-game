@@ -3,6 +3,7 @@
 
 $(document).ready(function() {
   // store references to nodes (for speed)
+  var guessedElement = $('#guessed');
   var guessElement = $('#guessbox');
   var numGuessesLeftNode = $('#num-guesses');
 
@@ -22,9 +23,34 @@ $(document).ready(function() {
     this.guess = guessElement.val();
   };
 
+  // Store guess in game object and display guess to user
   Game.prototype.storeGuess = function() {
+    // store internally
     this.guesses.push(this.guess);
-  }
+  };
+
+
+  // Return true if guess is hot, false if guess is cold
+  Game.prototype.guessIsHot = function() {
+    var prevGuess = this.guesses[this.guesses.length - 2];
+
+    return Math.abs(prevGuess - this.answer) >= Math.abs(this.guess - this.answer);
+  };
+
+  // Adds guess to HTML
+  Game.prototype.displayGuess = function() {
+    var guessSpan = $('<span>' + this.guess + '</span>');
+
+    // add class to indicate guess temperature
+    if (this.guesses.length > 1) {
+      if (this.guessIsHot())
+        guessSpan.addClass('hot');
+      else
+        guessSpan.addClass('cold');
+    }
+
+    guessedElement.append(guessSpan);
+  };
 
   // return boolean for if guess is correct
   Game.prototype.correctGuess = function() {
@@ -55,8 +81,7 @@ $(document).ready(function() {
     // TO-DO
 
     return true;
-  }
-
+  };
 
   // return win() if correct guess. Return minusGuess() if wrong guess.
   Game.prototype.turn = function() {
@@ -64,6 +89,7 @@ $(document).ready(function() {
     if (!this.validGuess())
       return;
     this.storeGuess();
+    this.displayGuess();
     if (this.correctGuess())
       return this.win();
     else
@@ -110,5 +136,5 @@ $(document).ready(function() {
   $('#restart').on('click', function(e) {
     e.preventDefault();
     game = new Game;
-  })
+  });
 });

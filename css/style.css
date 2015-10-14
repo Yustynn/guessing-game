@@ -52,9 +52,19 @@ a {
   .controls a:last-child {
     float: right; }
 
-.guesses-left {
+#guesses-left {
   margin: 50px auto 0 auto;
   width: 80%; }
+
+#guessed {
+  font-size: 20px;
+  text-align: center; }
+  #guessed span::after {
+    content: " "; }
+  #guessed .hot {
+    color: red; }
+  #guessed .cold {
+    color: blue; }
 
 input {
   text-align: center;
