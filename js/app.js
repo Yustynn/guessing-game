@@ -3,11 +3,12 @@
 
 $(document).ready(function() {
   // store references to nodes (for speed)
-  var guessedElement = $('#guessed');
-  var guessElement = $('#guessbox');
-  var numGuessesLeftNode = $('#num-guesses');
-  var relativeTempElement = $('#relative-temp');
-  var higherLowerElement = $('#higher-lower');
+  var guessedElement = $('#guessed'),
+    guessElement = $('#guessbox'),
+    scorebox = $('#scorebox'),
+    numGuessesLeftNode = $('#num-guesses'),
+    relativeTempElement = $('#relative-temp'),
+    higherLowerElement = $('#higher-lower');
 
   function Game() {
     // randomly generate answer
@@ -19,9 +20,11 @@ $(document).ready(function() {
     // Clear previous input
     guessedElement.html('Guessed: ');
     relativeTempElement.html('');
+    scorebox.html("<span id='num-guesses'>5</span> Guesses Left!");
+    scorebox.css('background-color', '');
     // reset displayed guesses left to 5
     this.updateNumGuessesDisplay();
-  }
+  };
 
   // return value of guess
   Game.prototype.retrieveGuess = function() {
@@ -94,12 +97,13 @@ $(document).ready(function() {
       return this.lose();
   };
 
+  // deliver on the goods
   Game.prototype.cheatCodeChecker = function() {
     if (this.guess == 'inittowinit') {
       this.win();
       return true;
     }
-    if (this.guess == 'cantwinemall') {
+    if (this.guess == 'youcantalwaysgetwhatyouwant') {
       this.lose();
       return true;
     }
@@ -108,14 +112,17 @@ $(document).ready(function() {
 
   // return boolean for if guess is 1) not a repeat AND 2) a number between 1-100
   Game.prototype.validGuess = function() {
+    // Alert if no guess content
     if (!this.guess) {
       alert('Fill in a number between 1 and 100!');
       return false;
     }
+    // Alert if guess isn't a number
     if (!Number(this.guess)) {
       alert('Use your numbers, not your words');
       return false;
     }
+    // Alert if number is out of range
     if (this.guess > 100 || this.guess < 1) {
       alert('Guess within 1 and 100!');
       return false;
@@ -131,19 +138,25 @@ $(document).ready(function() {
     return true;
   };
 
-  // return win() if correct guess. Return minusGuess() if wrong guess.
+  // run through the turn sequence
   Game.prototype.turn = function() {
+    // don't play if the game's over
     if (this.gameOver)
       return;
 
     this.retrieveGuess();
+    // if cheats are entered or guess is invalid, end the turn
     if (this.cheatCodeChecker() || !this.validGuess())
       return;
+
     this.storeGuess();
+
+    // give the user feedback
     this.displayGuess();
     this.displayRelativeTemp();
     this.displayHigherLower();
 
+    // either win or minus a guess. minusGuess() calls lose() if needed.
     if (this.correctGuess())
       return this.win();
     else
@@ -152,19 +165,21 @@ $(document).ready(function() {
 
   // tell the player the good news
   Game.prototype.win = function() {
-    alert('YOU WIN!');
+    scorebox.html('You WIN! Congratulations!');
+    scorebox.css('background-color', 'green');
     this.gameOver = true;
   };
 
   // tell the player to suck it
   Game.prototype.lose = function() {
-    alert('YOU LOSE! The right answer was ' + this.answer);
+    scorebox.html('YOU LOSE! The right answer was ' + this.answer);
+    scorebox.css('background-color', 'red');
     this.gameOver = true;
   };
 
   // tell the player the answer
   Game.prototype.giveHint = function() {
-    alert("Here's a hint: the answer's " + this.answer);
+    alert("PSST! The answer's " + this.answer);
   }
 
   var game = new Game;

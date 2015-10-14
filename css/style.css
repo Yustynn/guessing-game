@@ -52,7 +52,7 @@ a {
   .controls a:last-child {
     float: right; }
 
-#guesses-left {
+#scorebox {
   margin: 50px auto 0 auto;
   width: 80%; }
 
