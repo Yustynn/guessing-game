@@ -11,6 +11,7 @@ $(document).ready(function() {
     this.answer = Math.ceil(Math.random() * 100);
     // initialize guesses left to 5
     this.numGuessesLeft = 5;
+    this.guesses = [];
 
     // reset displayed guesses left to 5
     this.updateNumGuessesDisplay();
@@ -18,16 +19,19 @@ $(document).ready(function() {
 
   // return value of guess
   Game.prototype.retrieveGuess = function() {
-    console.log(guessElement.val());
-    return guessElement.val();
+    this.guess = guessElement.val();
   };
 
-  // return true/false for if guess is correct
+  Game.prototype.storeGuess = function() {
+    this.guesses.push(this.guess);
+  }
+
+  // return boolean for if guess is correct
   Game.prototype.correctGuess = function() {
-    return this.retrieveGuess() == this.answer;
+    return this.guess == this.answer;
   };
 
-  // update only displayed guesses left
+  // update display for guesses left
   Game.prototype.updateNumGuessesDisplay = function() {
     numGuessesLeftNode.text(this.numGuessesLeft);
   };
@@ -40,8 +44,26 @@ $(document).ready(function() {
       return this.lose();
   };
 
+  // return boolean for if guess is 1) not a repeat AND 2) a number between 1-100
+  Game.prototype.validGuess = function() {
+    // Alert if guessed already
+    if (this.guesses.indexOf(this.guess) != -1) {
+      alert('You already guessed ' + this.guess + '!');
+      return false;
+    }
+    // Alert if not a number / if number > 100 || < 0
+    // TO-DO
+
+    return true;
+  }
+
+
   // return win() if correct guess. Return minusGuess() if wrong guess.
   Game.prototype.turn = function() {
+    this.retrieveGuess();
+    if (!this.validGuess())
+      return;
+    this.storeGuess();
     if (this.correctGuess())
       return this.win();
     else
