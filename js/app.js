@@ -63,25 +63,28 @@ $(document).ready(function() {
     alert("Here's a hint: the answer's " + this.answer);
   }
 
-
-
-
   var game = new Game;
 
-
-
+  // Initiate turn on button guess submission
   $('#submit-guess').on('click', function(e) {
     e.preventDefault(); // Just in case
     game.turn();
   });
 
-
+  // Initiate turn on enter key guess submission
   $('#guessbox').on('keyup', function(e) {
     e.preventDefault(); // Just in case
     if (e.keyCode == 13)
       game.turn();
   });
 
+  // Give answer on hint request
+  $('#request-hint').on('click', function(e) {
+    e.preventDefault();
+    game.giveHint();
+  });
+
+  // New game on restart button click
   $('#restart').on('click', function(e) {
     e.preventDefault();
     game = new Game;
