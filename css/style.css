@@ -63,7 +63,7 @@ input {
   font-size: 48px;
   font-weight: 800; }
 
-.submit-guess {
+#submit-guess {
   background-color: #76C295;
   text-transform: uppercase;
   width: 100%;

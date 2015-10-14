@@ -39,7 +39,7 @@ Game.prototype.minusGuess = function() {
 };
 
 // return win() if correct guess. Return minusGuess() if wrong guess.
-Game.prototype.evaluateAnswer = function() {
+Game.prototype.turn = function() {
   if (this.correctGuess())
     return this.win();
   else
@@ -56,17 +56,16 @@ Game.prototype.lose = function() {
   alert('YOU LOSE! The right answer was ' + this.answer);
 };
 
-Game.prototype.turn = function(e) {
-  e.preventDefault();
-  debugger;
-  this.evaluateAnswer();
-}
-
 $(document).ready(function() {
   var game = new Game;
 
-  $('.submit-guess').on('click', function(e) {
-    e.preventDefault();
-    game.evaluateAnswer();
+  $('#submit-guess').on('click', function(e) {
+    e.preventDefault(); // Just in case
+    game.turn();
   });
+
+  $('#restart').on('click', function(e) {
+    e.preventDefault();
+    game = new Game;
+  })
 });
