@@ -2,14 +2,15 @@
 // this way would be good practice.
 
 $(document).ready(function() {
-  // store references to nodes (for speed)
+  // store references to elements (for speed)
   var guessedElement = $('#guessed'),
     guessElement = $('#guessbox'),
     scorebox = $('#scorebox'),
-    numGuessesLeftNode = $('#num-guesses'),
+    numGuessesLeftElement = $('#num-guesses'),
     relativeTempElement = $('#relative-temp'),
     higherLowerElement = $('#higher-lower');
 
+  // Construct new game object, clear previous input
   function Game() {
     // randomly generate answer
     this.answer = Math.ceil(Math.random() * 100);
@@ -17,7 +18,7 @@ $(document).ready(function() {
     this.numGuessesLeft = 5;
     this.guesses = [];
 
-    // Clear previous input
+    // clear previous input
     guessedElement.html('Guessed: ');
     relativeTempElement.html('');
     scorebox.html("<span id='num-guesses'>5</span> Guesses Left!");
@@ -60,6 +61,7 @@ $(document).ready(function() {
     guessedElement.append(guessSpan);
   };
 
+  // Tells the user whether they're closer or further away from the answer
   Game.prototype.displayRelativeTemp = function() {
     if (this.guesses.length > 1) {
       if (this.guessIsHotter())
@@ -86,7 +88,7 @@ $(document).ready(function() {
 
   // update display for guesses left
   Game.prototype.updateNumGuessesDisplay = function() {
-    numGuessesLeftNode.text(this.numGuessesLeft);
+    numGuessesLeftElement.text(this.numGuessesLeft);
   };
 
   // update guesses left. Return lose() if no more guesses left.
@@ -112,29 +114,28 @@ $(document).ready(function() {
 
   // return boolean for if guess is 1) not a repeat AND 2) a number between 1-100
   Game.prototype.validGuess = function() {
-    // Alert if no guess content
-    if (!this.guess) {
-      alert('Fill in a number between 1 and 100!');
-      return false;
-    }
     // Alert if guess isn't a number
     if (!Number(this.guess)) {
-      alert('Use your numbers, not your words');
+      guessElement.val('Use numbers!');
+      return false;
+    }
+    // Alert if no guess content
+    if (!this.guess) {
+      guessElement.val('Fill in a number between 1 and 100!');
       return false;
     }
     // Alert if number is out of range
     if (this.guess > 100 || this.guess < 1) {
-      alert('Guess within 1 and 100!');
+      guessElement.val('Guess within 1 and 100!');
       return false;
     }
     // Alert if guessed already
     if (this.guesses.indexOf(this.guess) != -1) {
-      alert('You already guessed ' + this.guess + '!');
+      guessElement.val('You already guessed ' + this.guess + '!');
       return false;
     }
-    // Alert if not a number / if number > 100 || < 0
-    // TO-DO
 
+    // valid guess
     return true;
   };
 
@@ -179,7 +180,7 @@ $(document).ready(function() {
 
   // tell the player the answer
   Game.prototype.giveHint = function() {
-    alert("PSST! The answer's " + this.answer);
+    guessElement.val('PSST! Try ' + this.answer);
   }
 
   var game = new Game;
